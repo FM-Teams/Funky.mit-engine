@@ -7,6 +7,7 @@ function loadPauseMenu() {
   setInterval(() => {
     if (pauseSound.volume <= 0.4 && game.menuPause.activate == true) {
       pauseSound.volume += 0.0007;
+      stopBPM()
     }
   }, global.frameLimite)
 }
@@ -15,7 +16,7 @@ function loadPauseMenu() {
 
 document.addEventListener('keydown', function(event) {
   if (event.key == "Enter") {
-    if (game.isStarting == true) {
+    if (game.isStarting == true && !game.playerDied) {
       document.getElementById("pauseMenu:resume").onclick()
     }
   }
@@ -26,7 +27,7 @@ document.addEventListener('keydown', function(event) {
 })
 
 window.onblur = function () {
-  if (game.menuPause.activate == false && game.isStarting == true) {
+  if (game.menuPause.activate == false && !game.playerDied && game.isStarting == true) {
     pauseMenu();
   }
 }
@@ -71,8 +72,9 @@ function pauseMenu() {
     document.getElementById("pauseMenu").style.visibility = "visible";
   } else {
     // close
-    FMS_makeCSS_opacity("pauseMenu",0.5,[1,0],"ease-out",1);
-    FMS_makeCSS_Ypos("pauseMenu",1,[0,100],"ease-out",1);
+    document.getElementById("pauseMenu").style.top = "0px"; 
+    FMS_makeCSS_opacity("pauseMenu",0.2,[1,0],"ease-out",1);
+    FMS_makeCSS_Ypos("pauseMenu",0.2,[0,100],"ease-out",1);
 
     startBPM(game.song.metadata.chart.BPM);
 

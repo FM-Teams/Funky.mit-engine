@@ -1,6 +1,6 @@
 let o = JSON.parse(sessionStorage.getItem("game"))
-if (sessionStorage.getItem("game") == undefined) {
-  PreError("fail to get data from 'menu.html', try again", false, true)
+if (sessionStorage.getItem("game") == undefined || sessionStorage.getItem("game") == null || sessionStorage.getItem("game") == "") {
+  PreError("game","fail to get data fom freeplay","null","mainGame","Null data found, pov: you skip everything just for play the mods",{ toMenu: true });
 }
 
 document.body.id = Math.random()*1000;  // avoild to the name confly
@@ -10,14 +10,19 @@ global.tab = "game";
 let game = {
   canStart: false,
   isStarting: false,
+  preGame: document.getElementById("PRE-GAME"),
   
   game: document.getElementById("GAME"),
   gui: document.getElementById("GUI"),
   ranks: document.getElementById("ranks"),
+  playerDied: false,
   
   extensions: [],
   
+  ranks: null,
+  
   scores: 0,
+  addScoresValue: [122,10,160],
   missed: 0,
   
   gameMods: {
@@ -57,7 +62,7 @@ let game = {
   },
   
   
-  health: 0,
+  health: 50,
   
   healthBars: {
     bumpIcon: true,
@@ -66,7 +71,7 @@ let game = {
       minPos: -95,
       maxPos: 85
     },
-    
+    timer: null,
     value: null,
     score: null,
     missed: null,
@@ -74,7 +79,8 @@ let game = {
     bfIcon: null,
     dadIcon: null 
   },
-
+  
+  
   BPM: {
     currentBPM: null,
     activate: false,
@@ -83,11 +89,14 @@ let game = {
   },
   
   song: {
+    BPM: null,
+    events: null,
     timer: 0,
     onEnded: false,
     name: null,
     difficulties: null,
     chart: null,
+    chartType: null,
     metadata: null,
     
     inst: null,
@@ -180,6 +189,7 @@ let game = {
   },
   
   cam: {
+    moving: false,
     easing: "ease-in-out",
     type: 1,
     autoCam: true,
@@ -236,7 +246,7 @@ if (FMD_getStorage("FM : custom icon bumping") == "null") {
   FMD_setStorage("FM : custom icon bumping","default")
 }
 
-if (game.settings.devMods == false && sessionStorage.getItem("FM : Botplay") !== undefined && sessionStorage.getItem("FM : Botplay") !== null && sessionStorage.getItem("FM : Botplay") !== "0")
+if (sessionStorage.getItem("FM : Botplay") !== undefined && sessionStorage.getItem("FM : Botplay") !== null && sessionStorage.getItem("FM : Botplay") !== "0")
 {
   if (sessionStorage.getItem("FM : Botplay") == "true") {
     game.settings.botplay = true;
@@ -248,8 +258,6 @@ if (game.settings.devMods == false && sessionStorage.getItem("FM : Botplay") !==
 }
 
 // get file get file get file get file get...
-
-try {
 
 getMainJson(o[0])
 
@@ -307,7 +315,6 @@ function getExtension() {
           
         if (i >= game.extensions.length - 1) {
           getMetadataJson();
-          getChartJson();
             
           setTimeout(() => {
             loadStorageData();
@@ -321,7 +328,7 @@ function getExtension() {
 
 function getMetadataJson() {
   var r = new XMLHttpRequest();
-  var l = game.songFolder+"/metadata.json";
+  var l = game.songFolder+"/"+FMS_fileExtension.metadata;
   r.open("GET",l); r.onload = function () { 
     if (r.responseText == "Error 404, file not found." || r.responseText == "" || r.responseText == null) {
       // when onError or null
@@ -334,16 +341,23 @@ function getMetadataJson() {
       game.song.metadata = JSON.parse(r.responseText)
         
       game.notesSpeed = game.song.metadata.chart.speed;
+      
+      game.song.chartType = game.song.metadata["chart type"];
         
       game.dadName = game.song.metadata.assets.characters[2];
       game.gfName = game.song.metadata.assets.characters[1];
       game.bfName = game.song.metadata.assets.characters[0];
         
       game.BPM.currentBPM = game.song.metadata.chart.BPM;
+      game.song.BPM = game.song.metadata.chart.BPM;
       game.canStart = true;
         
       getStageData(game.song.metadata.assets.stage)
-      getNotesData(game.song.metadata.assets["notes skin"])
+      getNotesData(game.song.metadata.assets["notes skin"]);
+      
+      getChartJson();
+      getEventsJson();
+      
       onPreLoad()
     }
   }
@@ -353,7 +367,7 @@ function getMetadataJson() {
 
 function getChartJson() {
   var r = new XMLHttpRequest();
-  var l = game.songFolder+"/chart.FM";
+  var l = game.songFolder+"/"+FMS_fileExtension.chart;
   r.open("GET",l); r.onload = function () { 
     if (r.responseText == "Error 404, file not found." || r.responseText == "" || r.responseText == null) {
       // when onError or null
@@ -363,6 +377,25 @@ function getChartJson() {
       // on load
       
       game.song.chart = JSON.parse(r.responseText)
+    }
+  }
+  r.send();
+}
+
+function getEventsJson() {
+  var r = new XMLHttpRequest();
+  var l = game.songFolder + "/"+FMS_fileExtension.events;
+  r.open("GET", l);
+  r.onload = function() {
+    if (r.responseText == "Error 404, file not found." || r.responseText == "" || r.responseText == null) {
+      // when onError or null
+      
+      console.log("songs info | no events found !");
+    } else {
+      // on load
+      
+      game.song.events = JSON.parse(r.responseText)
+      playChart_events("",game.song.events);
     }
   }
   r.send();
@@ -443,8 +476,21 @@ function loadStage(data) {
   
   document.getElementById("GAME").style.scale = data["stage Zooms"]
   
+  globalFunction_init();
+}
+
+
+
+
+
+function globalFunction_init() {
   getCharacters();
+  
   loadPauseMenu();
+  
+  bfDiedInit();
+  
+  ranksInit();
 }
 
 var antiLoop = 0;
@@ -543,7 +589,11 @@ function endLoading() {
   
   setTimeout(() => {
     if (game.isStarting == false) {
-      document.getElementById("loadingS").remove()
+      FMS_makeCSSanim("loadingS", 0.06, "ease-in", "1", [
+        { opacity: 0 }
+      ]).onfinish = function() {
+        document.getElementById("loadingS").remove();
+      }
     }
   },3000)
 }
@@ -556,7 +606,12 @@ function startingGlobalGame() {
   
   gameStart()
   game.isStarting = true;
-  document.getElementById("PressFoPlay").remove()
+
+  FMS_makeCSSanim("PressFoPlay", 0.25, "ease-in", "1", [
+    { opacity: 0, top: "20px" }
+  ]).onfinish = function() {
+    document.getElementById("PressFoPlay").remove();
+  }
 }
   
 function gameStart() {
@@ -597,12 +652,15 @@ function gameStart() {
 
   game.song.inst.onended = function () {
     game.song.onEnded = true;
+    onGameEnded();
     FMD_setStorage("FM : "+game.songSelect+""+game.modsSelect,game.scores);
     transition(4)
   }
 }
 
 function goBackmenu() {
+  canvas_backgroundMusic(true);
+  
   game.song.onEnded = true;
   game.isSongFinished = true; 
   transition(4);
@@ -672,12 +730,15 @@ function camMove(x,y) { // took 1 hours, just for that
       
     document.getElementById("GAME").style.left = pxCamX;
     document.getElementById("GAME").style.top = pxCamY;
+    
+    game.cam.moving = true;
       
     // for no reson it inversed ?
     FMS_makeCSSanim("GAME", game.cam.speed * 0.3, game.cam.easing, 1, [
       { left: oldCamShit[0] }, { top: pxCamY }
     ]).onfinish = function() {
       oldCamShit = [pxCamX,pxCamY];
+      game.cam.moving = false;
     }
   }
 }
@@ -715,6 +776,3 @@ function camBeatHit() {
   }
 }
 
-} catch (error) {
-  PreError(error, false, true)
-}

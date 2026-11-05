@@ -1,52 +1,42 @@
 try {
 let chara = {}
+
 function getCharacters() {
-  // get the json file
-  var rawFile = new XMLHttpRequest();
-  var reload = 0;
-  rawFile.open("get","mods/"+game.modsSelect+"/characters/"+game.song.metadata.assets.characters[0]+"/main.fmc", true);
-  rawFile.onreadystatechange = function() {
-    reload++;
-    if (rawFile.readyState === 4) {
-      var allText = rawFile.responseText;
-    }
-    
-    if (reload == 3) {
-      if (allText == "Error 404, file not found.") {
-        alert("characters | fail to get '"+"mods/"+game.modsSelect+"/characters/"+game.song.metadata.assets.characters[0]+"/main.fmc' file, reson: "+allText)
-      } else {
-        game.data.bf = JSON.parse(allText);
+  var r = new XMLHttpRequest();
+  var l = "mods/"+game.modsSelect+"/characters/"+game.song.metadata.assets.characters[0]+"/main.fmc";
+  r.open("GET", l);
+  r.onload = function() {
+    if (r.responseText == "Error 404, file not found." || r.responseText == "" || r.responseText == null) {
+      // when onError or null
+      
+      PreError("getCharacters", "fail to load the '"+game.song.metadata.assets.characters[0]+"/main.fmc' file", l, "characters.js", "null found, no rap without rapper :[", { toMenu: true });
+    } else {
+      game.data.bf = JSON.parse(r.responseText);
         
-        getCharacters2()
-      } 
+      getCharacters2()
     }
   }
-  rawFile.send();
+  r.send();
 }
 
 function getCharacters2() {
-  // get the json file
-  var rawFile = new XMLHttpRequest();
-  var reload = 0;
-  rawFile.open("get","mods/"+game.modsSelect+"/characters/"+game.song.metadata.assets.characters[2]+"/main.fmc", true);
-  rawFile.onreadystatechange = function() {
-    reload++;
-    if (rawFile.readyState === 4) {
-      var allText = rawFile.responseText;
-    }
-    
-    if (reload == 3) {
-      if (allText == "Error 404, file not found.") {
-        alert("characters | fail to get '"+"mods/"+game.modsSelect+"/characters/"+game.song.metadata.assets.characters[2]+"/main.fmc' file, reson: "+allText)
-      } else {
-        game.data.dad = JSON.parse(allText);
+  var r = new XMLHttpRequest();
+  var l = "mods/"+game.modsSelect+"/characters/"+game.song.metadata.assets.characters[2]+"/main.fmc";
+  r.open("GET", l);
+  r.onload = function() {
+    if (r.responseText == "Error 404, file not found." || r.responseText == "" || r.responseText == null) {
+      // when onError or null
+      
+      PreError("getCharacters", "fail to load the '"+game.song.metadata.assets.characters[2]+"/main.fmc' file", l, "characters.js", "null found, you win the battle rap ! yay !", { toMenu: true });
+    } else {
+      game.data.dad = JSON.parse(r.responseText);
         
-        getCharacters3()
-      } 
+      getCharacters3();
     }
   }
-  rawFile.send();
+  r.send();
 }
+
 
 function getCharacters3() {
   // get the json file
@@ -80,7 +70,11 @@ function loadCharacther() {
   var flipAll = false;
   var animList = Object.keys(game.data.bf.animations) // Json key to array 
   if (game.data.bf["flipX ?"] == true) {
-    flipAll = true;
+    if (game.stage.data.characters["flip-X"][0]) {
+      flipAll = false;
+    } else {
+      flipAll = true;
+    }
   }
   
   document.getElementById(`Boyfriend`).style.left = game.data.bf.position[0]+"px"
@@ -161,7 +155,11 @@ function loadCharacther2() {
   var flipAll = true;
   var animList = Object.keys(game.data.dad.animations) // Json key to array 
   if (game.data.dad["flipX ?"] == true) {
-    flipAll = false;
+    if (game.stage.data.characters["flip-X"][2]) {
+      flipAll = true;
+    } else {
+      flipAll = false;
+    }
   }
   
   document.getElementById(`Dad`).style.left = game.data.bf.position[0]+"px"
@@ -234,13 +232,18 @@ function loadCharacther2() {
 function loadCharacther3() {
   var flipAll = false;
   if (game.data.gf["flipX ?"] == true) {
-    flipAll = true;
+    if (game.stage.data.characters["flip-X"][0]) {
+      flipAll = false
+    } else {
+      flipAll = true;
+    }
   }
   
-  makeLocalAnim(game.characters.gfIdAnim.NL,game.modsFolder +"/characters/"+ game.song.metadata.assets.characters[1] +"/"+ game.data.gf.animations["NL"].anim,game.data.gf.animations["NL"]["length"],game.stage.data.characters.gf[0],game.stage.data.characters.gf[1],game.data.gf.scale,"Girlfriend",game.data.gf.animations["NL"]["speed"],game.data.gf.animations["NL"]["isloop ?"],game.data.gf.animations["NL"]["position"][0],game.data.gf.animations["NL"]["position"][1], flipAll, game.data.gf["Padding Length ?"])
-  makeLocalAnim(game.characters.gfIdAnim.NR,game.modsFolder +"/characters/"+ game.song.metadata.assets.characters[1] +"/"+ game.data.gf.animations["NR"].anim,game.data.gf.animations["NR"]["length"],game.stage.data.characters.gf[0],game.stage.data.characters.gf[1],game.data.gf.scale,"Girlfriend",game.data.gf.animations["NR"]["speed"],game.data.gf.animations["NR"]["isloop ?"],game.data.gf.animations["NR"]["position"][0],game.data.gf.animations["NR"]["position"][1], flipAll, game.data.gf["Padding Length ?"])
+  makeLocalAnim(game.characters.gfIdAnim.NL,game.modsFolder +"/characters/"+ game.song.metadata.assets.characters[1] +"/"+ game.data.gf.animations["NL"].anim,game.data.gf.animations["NL"]["length"],game.stage.data.characters.gf[0],game.stage.data.characters.gf[1],game.data.gf.scale,"Girlfriend",game.data.gf.animations["NL"]["speed"],game.data.gf.animations["NL"]["isloop ?"],game.data.gf.animations["NL"]["position"][0],game.data.gf.animations["NL"]["position"][1], flipAll, game.data.gf["Padding Length ?"]);
+  
+  makeLocalAnim(game.characters.gfIdAnim.NR,game.modsFolder +"/characters/"+ game.song.metadata.assets.characters[1] +"/"+ game.data.gf.animations["NR"].anim,game.data.gf.animations["NR"]["length"],game.stage.data.characters.gf[0],game.stage.data.characters.gf[1],game.data.gf.scale,"Girlfriend",game.data.gf.animations["NR"]["speed"],game.data.gf.animations["NR"]["isloop ?"],game.data.gf.animations["NR"]["position"][0],game.data.gf.animations["NR"]["position"][1], flipAll, game.data.gf["Padding Length ?"]);
 
-  idleAnim()
+  idleAnim();
 }
 
 // -------
@@ -367,13 +370,10 @@ function hidedad() {
 var gfIdle = 0;
 var gf_noLoopAnim = 0;
 function characterBeatHit(){
+  var animList_BF = Object.keys(game.data.bf.animations) // Json key to array 
+  var animList_DAD = Object.keys(game.data.dad.animations) // Json key to array 
 
-var animList_BF = Object.keys(game.data.bf.animations) // Json key to array 
-var animList_DAD = Object.keys(game.data.dad.animations) // Json key to array 
-
-
-
-      if (IsStopped_LocalAnim(bfIdle) == "true" && IsStopped_LocalAnim("bf N") == "true") {
+  if (IsStopped_LocalAnim(bfIdle) == "true" && IsStopped_LocalAnim("bf N") == "true") {
         document.getElementById(game.characters.bfIdAnim.L + " folder").style.scale = 0;
         document.getElementById(game.characters.bfIdAnim.U + " folder").style.scale = 0;
         document.getElementById(game.characters.bfIdAnim.D + " folder").style.scale = 0;
@@ -409,32 +409,25 @@ var animList_DAD = Object.keys(game.data.dad.animations) // Json key to array
       }
   
   
-  
-  if (game.events.onStepHit == true) {
-    //gfIdle = 1; // shhh...
-  }
+
   
     //console.log(gfIdle)
-      gfIdle++;
-      if (gfIdle == 0 && IsStopped_LocalAnim("gf NR") == "true") {
-      document.getElementById("gf NR folder").style.scale = 0;
-      document.getElementById("gf NL folder").style.scale = 1;
-      
-      playLocalAnim("gf NL");
-      } else if (gfIdle == 2 && IsStopped_LocalAnim("gf NL") == "true") {
-      document.getElementById("gf NR folder").style.scale = 1;
-      document.getElementById("gf NL folder").style.scale = 0;
-      
-        playLocalAnim("gf NR");
-        gfIdle = -2;
-      }
+  
+  
+  gfIdle++;
+  
+  if (gfIdle == 0 && IsStopped_LocalAnim("gf NR") == "true") {
+    playLocalAnim("gf NL");
     
-  
-    //gf_noLoopAnim = 0;
-  
-  
-
-
+    document.getElementById("gf NR folder").style.scale = 0;
+    document.getElementById("gf NL folder").style.scale = 1;
+  } else if (gfIdle == 2 && IsStopped_LocalAnim("gf NL") == "true") {
+    playLocalAnim("gf NR");
+    
+    document.getElementById("gf NR folder").style.scale = 1;
+    document.getElementById("gf NL folder").style.scale = 0;
+    gfIdle = -2;
+  }
 }
 
 function idleAnim() {

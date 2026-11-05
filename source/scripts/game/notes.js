@@ -38,6 +38,7 @@ function makeNote(x,as) {
     
     game.notes[i].style.width = "158px";
     game.notes[i].style.height = "160px";
+    game.notes[i].style.scale = game.notesSkinData.notes.scale
     
     game.notes[i].style.position = "absolute";
     game.notes[i].style.visibility = "visible";
@@ -109,6 +110,7 @@ function makeNote(x,as) {
 
   // arrows key events
   document.addEventListener('keydown', function(event) {
+    if (!game.menuPause.activate) {
     if (event.key == game.settings.key[0] || event.key == "ArrowLeft") {
       game.notes[0].onpointerdown()
     }
@@ -124,9 +126,11 @@ function makeNote(x,as) {
     if (event.key == game.settings.key[3] || event.key == "ArrowRight") {
       game.notes[3].onpointerdown();
     }
+    }
   });
   
   document.addEventListener('keyup', function(event) {
+    if (!game.menuPause.activate) {
     if (event.key == game.settings.key[0] || event.key == "ArrowLeft") {
       game.notes[0].onpointerout()
     }
@@ -141,6 +145,7 @@ function makeNote(x,as) {
     
     if (event.key == game.settings.key[3] || event.key == "ArrowRight") {
       game.notes[3].onpointerout()
+    }
     }
   });
 
@@ -204,6 +209,7 @@ function notesKey() {
 function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.song.inst.currentTime) {
   var type2 = type;
   var notesTimeGenerated = spawnTime;
+  var notesFPS = [60,40];
   //alert(game.song.inst.currentTime+" : "+spawnTime)
   
   if (game.settings.soundOnPressNote == true) {
@@ -219,7 +225,7 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
         tempoNote.style.width = "158px";
         tempoNote.style.height = "160px";
         //tempoNote.style.borderRadius = "100px"
-        
+        tempoNote.style.backgroundSize = (game.notesSkinData["notes strumb"].scale*4)+"px";
         tempoNote.style.zIndex += 1;
         tempoNote.style.position = "absolute";
         tempoNote.style.visiblility = "visible";
@@ -234,6 +240,8 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
         tempoNote.style.left = (game.notesDefaultPosition + (42.5 * type)) + "px"
         tempoNote.style.top = "335px";
         tempoNote.style.scale = game.notesSkinData.scales
+        
+        notesFPS = notesFPS[0]
       } else {
         // long note
         var tempoNote = document.createElement("div");
@@ -244,6 +252,7 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
     
         tempoNote.style.position = "absolute";
         tempoNote.style.visiblility = "visible";
+
          tempoNote.style.backgroundImage = "url("+"mods/"+game.modsSelect+"/images/notes-skins/"+game.notesSkinSelecte+"/"+game.notesSkinData["long notes"]+".png)";
         tempoNote.style.left = (game.notesDefaultPosition + (42.5 * type)) + "px";
         //tempoNote.style.width = "10px";
@@ -252,6 +261,8 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
         tempoNote.style.top = "335px";
         //tempoNote.style.backgroundColor = "blue"
         tempoNote.style.scale = game.notesSkinData.scales;
+        
+        notesFPS = notesFPS[1];
       }
       
       var angle = "";
@@ -288,14 +299,23 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
         tempoNote.style.transform = `translateY(${Y - 100}px)`;
         tempoNote.style.transform += angle;
         
+        if (Y <= (-2000 + notesClickDetection)) {
+          tempoNote.style.opacity = 0.5;
+        }
+        
         if /* sync with the player notes */ (tempoNote.style.left !== (game.notesDefaultPosition + (42.5 * type)) + "px") {
           tempoNote.style.left = (game.notesDefaultPosition + (42.5 * type)) + "px"
         }
-        
+
+        if (game.playerDied) {
+          tempoNote.remove();
+          clearInterval(loop);
+        }
+          
         if /* move the notes */ (game.canMoveNote == true && game.pauseGameState == false) {
           // *old system not sound time sycroniser | Y -= game.notesSpeed * 40;
           
-          
+
           if (!game.settings.botplay) {
             // player
             
@@ -304,7 +324,7 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
               
               Y = "-"+((((game.song.inst.currentTime * 1000) - 
               (notesTimeGenerated)) * 
-              (game.notesSpeed * 2.3)) + 1350);
+              (game.notesSpeed * 2.3)) + 1260);
             } else {
               if (!slowMode) {
                 slowMode = true;
@@ -316,7 +336,7 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
               
               Y = "-"+((((game.song.inst.currentTime * 1000) - 
               (notesTimeGenerated)) * 
-              (game.notesSpeed * 2.1)) + 1350);
+              (game.notesSpeed * 2.1)) + 1260);
             }
             
           } else {
@@ -329,9 +349,10 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
         
           if (game.settings.botplay !== true) {
             // manual mods
+            
             if (isLongNote !== true) {
               // detecte 
-              if (Y <= (-800 + notesClickDetection) && pressed !== true) {
+              if (Y <= (-800 + notesClickDetection) && Y >= (-1340 + notesClickDetection) &&  pressed !== true) {
                 if (type == 0) {
                   if (game.keyPress.L == true) {
                     pressed = true;
@@ -366,6 +387,7 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
                   }
                 }
               }
+            
               
               // notes clicked
               if (Y <= (-800 + notesClickDetection) && pressed == true) {
@@ -436,7 +458,7 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
               
               if (!isLongNote) {
                 // default notes
-                FMS_health(4);
+                FMS_health(5);
                 game.missed += 1;
                 tempoNote.remove();
                 clearInterval(loop);
@@ -445,7 +467,7 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
                 coreEvents_onMiss(false)
               } else {
                 // long notes
-                FMS_health(2);
+                FMS_health(1);
                 tempoNote.remove();
                 clearInterval(loop);
                 bf_miss();
@@ -464,10 +486,9 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
               }
               
               if (isLongNote !== true) {
-                tempN = 5;
-                game.events.onNotesHit = true;
+                tempN = 2;
               } else {
-                tempN = 10;
+                tempN = 7;
               }
       
               play = false;
@@ -507,16 +528,16 @@ function generateNotes(type,isLongNote,customNotesSkin = false,spawnTime = game.
             }
           }
           
-      },fpsToMS(60))
+      },fpsToMS(notesFPS))
     }
 }
 
 function generateDadNotes(type,isLongNotes = false){
   var wait = setTimeout(() => {
     if (type !== 3) {
-      var timeD = 100;
+      var timeD = 90;
       if (isLongNotes == true) {
-        timeD = 300;
+        timeD = 80;
       }
       
       
@@ -577,45 +598,29 @@ function generateNotesEffect(type) {
   }
 }
 
-function makeLongNotes(type,L,spawnTime) {
-  var step = 0;
-  var value = 0;  // delay
-  //console.log(L)
-  if (L >= 1) {
-  var mb = setInterval(() => {
-    
-    if (value >= L * 0.7) {
-      clearInterval(mb);
-    }
-    
-    value += 50;  // speed
-
-    if (value >= step) {
-      step += 50;
-      generateNotes(type,true,false,spawnTime + value * 0.50);
-    }
-  }, 3)
+function makeLongNotes(type, L, spawnTime) {
+  // AI part here !, the github ai just fixe longnote generation because not generate perfectly the lenght of pysch long note :T
+  // so yeah im really sorry but it better for my little engine
+  
+  if (!Number.isFinite(L) || L <= 0 || type < 0 || type > 3) return;
+  
+  const remove = 53;
+  const pieceMs = Math.max(30, Math.min(80, (L-remove) / 8));
+  
+  for (let offset = 0; offset <= (L - remove); offset += pieceMs) {
+    generateNotes(type, true, false, spawnTime + offset);
   }
 }
 
-function makeDadLongNotes(type,L) {
-  var step = 0;
-  var value = -159;
-  //console.log(L)
-  if (L >= 1) {
-  var mb = setInterval(() => {
-    
-    if (value >= L * 1.4) {
-      clearInterval(mb);
-    }
-    
-    value += 50;
-
-    if (value >= step) {
-      step += 150;
-      generateDadNotes(type,true);
-    }
-  }, 3)
+function makeDadLongNotes(type, L) {
+  // idem
+  
+  if (!Number.isFinite(L) || L <= 0 || type < 0 || type > 3) return;
+  
+  const pieceMs = Math.max(40, Math.min(120, L / 6));
+  
+  for (let offset = 0; offset <= L; offset += pieceMs) {
+    generateDadNotes(type, true);
   }
 }
 

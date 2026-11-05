@@ -14,8 +14,13 @@ function startBPM(bpm) {
         characterBeatHit();
         camBeatHit();
         iconBeatHit();
+        ScreenBeat(1.03,0.0004);
         
         coreEvents_BeatHit();
+      }
+      
+      if (game.playerDied) {
+        clearInterval(bpmL);
       }
       
       time2++;

@@ -1,21 +1,43 @@
-function ScreenBeat(intensity,speed) {
-  var defaultZoom = document.getElementById("GAME").style.scale;
-  var s = intensity;
-  
-  document.getElementById("GUI").style.transform = "scale("+intensity+")";
-  //document.getElementById("GAME").style.transform = "scale("+intensity*1.01+")";
+var beat = false;
+var beat2 = false;
 
-  FMS_makeCSSanim("GUI",speed,"ease-out",speed,[
-    { transform: 'scale(1)' }
-  ]).onfinish = function () {
-    document.getElementById("GUI").style.transform = "scale("+1+")"; 
-  }
+function ScreenBeat(intensity,speed) {
+  function turnGUI(angle) {
+    document.getElementById("GUI").style.transform = "rotate("+angle+"deg)";
   
-  /*FMS_makeCSSanim("GAME",speed,"ease-out",speed*1.2,[
-    { transform: 'scale(1)' }
-  ]).onfinish = function () {
-    document.getElementById("GAME").style.transform = "scale("+1+")"; 
-  }*/
+    FMS_makeCSSanim(document.getElementById("GUI").id, 0.25, "ease-out", 1, [
+      { transform: "rotate(0deg)" }
+    ]).onfinish = function() {
+      document.getElementById("GUI").style.transform = "rotate(0deg)";
+    }
+  }
+
+  function turnGAME(angle) {
+    document.getElementById("GAME").style.transform = "rotate("+angle+"deg)";
+  
+    FMS_makeCSSanim(document.getElementById("GAME").id, 0.25, "ease-out", 1, [
+      { transform: "rotate(0deg)" }
+    ]).onfinish = function() {
+      document.getElementById("GAME").style.transform = "rotate(0deg)";
+    }
+  }
+
+  if (beat) {
+    turnGAME(-0.2);
+    beat = false;
+  } else {
+    turnGAME(0.2);
+    coreEvents_Beat2Hit();
+    beat = true;
+    if (beat2) {
+      turnGUI(0.3)
+
+      beat2 = false;
+    } else {
+      turnGUI(-0.3);
+      beat2 = true;
+    }
+  }
 }
 
 // core function, you can use it for your full mods
@@ -28,29 +50,65 @@ function onGameInit() {
   
 }
 
+function onGameEnded() {
+  
+}
+
 function coreEvents_BeatHit() {
   beatHit()
 }
+
+function coreEvents_Beat2Hit() {}
 
 function coreEvents_stepHit() {
   stepHit();
 }
 
 function coreEvents_onMiss(longNotes) {
-  onMiss(longNotes)
+  if (!longNotes) {
+    game.scores -= game.addScoresValue[2];
+  }
+  
+  if (!longNotes) {
+    makeRanks("Bad", game.imagesFolder + "/ranks/Bad", { scale: 0.4 });
+  }
+  
+  onMiss(longNotes);
 }
 
 function coreEvents_onNotesHit(longNotes) {
-  onNotesHit(longNotes);
+  if (!longNotes) {
+    game.scores += game.addScoresValue[0];
+  } else {
+    game.scores += game.addScoresValue[1];
+  }
   
   if (!longNotes) {
-    makeRanks("Sick",game.imagesFolder+"/ranks/Sick",{ scale: 0.4 });
+    if (game.ranks !== null) {
+      makeRanks("Sick", game.imagesFolder + "/" + game.ranks.sick[0], {
+        x: game.ranks.sick[1],
+        y: game.ranks.sick[2],
+        scale: game.ranks.sick[3]
+      });
+    } else {
+      makeRanks("Sick","assets/images/ranks/Sick", {
+        scale: 0.4
+      });
+    }
   }
+  
+  onNotesHit(longNotes);
+}
+
+function coreEvents_onEvents(data) {
+  onEvents(data)
 }
 
 // all function events (don't use it, is for the mods)
 
 function beatHit() {}
+
+function beat2Hit() {}
 
 function stepHit() {}
 
@@ -59,6 +117,8 @@ function onMiss(longNotes) {}
 function onNotesHit(longNotes) {};
 
 function onNotesOpponentHit() {};
+
+function onEvents(data) {};
 
 // 
 
