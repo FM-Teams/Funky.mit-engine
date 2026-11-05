@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="icon.ico">
+    <title id="title">Funky.mit Engine</title>
+    <iframe id="iframe" src="source/start-screen.html" frameborder="0" scrolling="no" height="355" width="620"  style="border-radius: 1px; /*border: 1.5px solid white;*/ scale: 0.89;" allow="encrypted-media;" ></iframe>
+    <!-- Android version -->
+  
+    <link rel="stylesheet" href="">
+  </head>
+  
+  <body>
+    <script src="source/extensions/FMS-engine/FMS engine.js"></script>
+    <script src="source/scripts/others/mainCanvas.js"></script>
+    <script>
+    if (sessionStorage.getItem("game close") == "true") {
+      sessionStorage.setItem("game close","") 
+    }
+
+  res();
+  window.onresize = function () {
+    res();
+  }
+  function res() {
+    if (sessionStorage.getItem("game close") == "true") {
+      sessionStorage.setItem("game close","");
+      window.close()
+      document.body.remove()
+    }
+    
+    // y position sync with windows height
+    if (document.getElementById("iframe").style.transform !== "translateY("+((window.innerHeight * 0.125)+0.5) +"px)") {
+       document.getElementById("iframe").style.transform = "translateY("+((window.innerHeight * 0.125)+0.5) +"px)";
+    }
+
+    // scale position sync with windows width
+    if (document.getElementById("iframe").style.scale !== window.innerWidth * 0.0015) {
+       document.getElementById("iframe").style.scale = window.innerWidth * 0.0015;
+    }
+  };
+
+  setInterval(() => {
+    if (document.getElementById("title").innerText !== sessionStorage.getItem("game title")) {
+      document.getElementById("title").innerText = sessionStorage.getItem("game title");
+    }
+  },500);
+  </script>
+  <script src="source/script/main/indexStat.js"></script>
+
+
+  <style type="text/css" media="all">
+    body { text-align: center; background-color: black; height: 100%; overflow-y: hidden; overflow: hidden; }
+  </style>
+</body>
+</html>
