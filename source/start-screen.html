@@ -9,7 +9,9 @@
 </head>
   <body id="j" style="scale: 1; position: absolute;">
   
-  <img id="nothing" onclick="menu.step++; this.remove()" src="assets/images/titleScreen.gif" style="position: absolute; opacity: 1; left: -7px; top: -8px; z-index: 10; visibility: visible; scale: 1.01" onerror="this.src = 'assets/images/titleScreen.png'  "/>
+  <img id="loading" src="assets/images/loadingScreen.gif" style="position: absolute; opacity: 1; left: -7px; top: -8px; z-index: 20; visibility: visible; scale: 1.01"/>
+
+  <img id="nothing" onclick="menu.step++; this.remove()" src="assets/images/titleScreen.png" style="position: absolute; opacity: 1; left: -7px; top: -8px; z-index: 10; visibility: visible; scale: 1.01" onerror="this.src = 'assets/images/titleScreen.png'  "/>
 
   <img id="fnflogo" src="assets/images/FNF_logo.png" style="position: absolute; left: -540px; top: -400px; scale: 0.2; z-index: 2;" />
   
@@ -17,10 +19,12 @@
   
   <a style="position: absolute; left: -133px; top: -13px; width: 400px; scale: 0.36; z-index: 2;">powered by <q style="color: #37a5ff;">Funkin.mit engine :D</q></a>
   
-  <img id="mmh" onclick="letFunky()" src="assets/images/titledScreenBG1.png" style="position: absolute; left: -1000px; top: -600px; scale: 0.5; opacity: 0.5; z-index: 1;" />
+  <a id="version" style="position: absolute; left: -133px; top: 332px; width: 400px; scale: 0.36; z-index: 2;">v 0.0.0</a>
   
-  <script src="extensions/FMS-engine/FMS engine.js"></script>
+  <img id="mmh" onclick="letFunky()" src="assets/images/titledScreenBG1.png" style="position: absolute; left: -1000px; top: -600px; scale: 0.5; opacity: 0.5; z-index: 1;" />
+
   <script src="extensions/storage/storage.js"></script>
+  <script src="extensions/FMS-engine/FMS engine.js"></script>
   <script src="scripts/menu/openings/mainOpening.js"></script>
   <script src="scripts/global/mainGlobal.js"></script>
 </body>

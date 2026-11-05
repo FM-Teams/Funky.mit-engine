@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+  <body id="body"style="scale: 1; position: absolute;">
+  <!-- background -->
+  
+  <img id="freeplayBG" src="assets/images/menuBG.png" style="opacity: 0.35; position: absolute; left: 5px; top: -8px; z-index: -1; scale: 1.1;" />
+  
+  <div id="BGcolor" style=" position: absolute; left: -8px; top: -8px; z-index: -5; opacity: 0.8; width: 900px; height: 500px; visibility: hidden;"></div>
+  
+  <div id="BGcolor2" style="position: absolute; left: -8px; top: -8px; z-index: -5; opacity: 0.2; width: 900px; height: 500px; background: linear-gradient(180deg,#0000007d,black)"></div>
+  
+    <a id="markerTulePos" style="zIndex: 5; background-Color: #00000052; border-radius: 2px;
+  position: absolute; top: 160px; left: -8px; padding: 4px; font-size: 9px; scale: 0.9">0</a>
+
+
+
+  <!-- global button -->
+
+  <a id="backButton" onclick="transition(2); backSound(); sessionStorage.setItem('FM : canvasMusic', true);" style="scale: 0.7; z-index: 2; font-size: 20px; color: white; position: absolute; top: -10px; left: -10px; width: 15px; background-Color: #5050507D; border-radius: 5px; padding: 5px; opacity: 0.5;" ><</a>
+
+  <!-- button at left down -->
+  
+  <img id="mods icon" onclick="metadataModsTab()" src="mods/base-game/icon.png" style="z-index: 6; scale: 0.03;
+  background-color: #00000052; border-radius: 50px; position: absolute; left: -93px; top: 88.5px;">
+
+
+  <a id="modsSelect" onclick="changeModsSelect()" style="zIndex: 5; background-Color: #00000052; border-radius: 3px;
+  position: absolute; top: 331px; left: 40px; padding: 4px; font-size: 8px; width: 100px;">mods: ...</a>
+  
+  <a id="settingSelect" onclick="settingTab()" style="zIndex: 5; background-Color: #00000052; border-radius: 3px;
+  position: absolute; top: 331px; left: -7px; padding: 4px; font-size: 8px; ">settings</a>
+
+  <!-- tule and game navigator -->
+  
+  <div id="albumsBG" style="z-index: -2; position: absolute; background-Color: black; opacity: 0.4; border-radius: 6px; border: 3px solid blue; padding: 6px; left: 390px; top: -15px; height: 380px; width: 160px;"></div>
+  <div id="metaAlbums" style="position: absolute; top: -20px; left: 360px;">
+    <a id="album text" style="scale: 0.5; z-index: 2; font-size: 20px; color: white; position: absolute; top: 245px; left: -8px; width: 200px; background-Color: #0000007d; border-radius: 5px; padding: 5px; opacity: 0.9;" >albums: un-name</a>
+    
+    <a id="album bpm" style="scale: 0.5; z-index: 2; font-size: 20px; color: white; position: absolute; top: 270px; left: -2px; width: 175px; background-Color: #0000007d; border-radius: 5px; padding: 5px; opacity: 0.9;" >BPM: 000</a>
+    
+    <img src="" style="scale: 0.55; position: absolute; left: -13px; z-index: -1; top:40px; border-radius: 10px;" onerror="this.src='assets/images/albums/default.png'" id="albumsImages" />
+  </div>
+  
+  <div id="freeplay" style="position: absolute; visibility: visible;">
+    <div id="topBar" style="scale: 0.63; position: absolute; left: 200px; top: -5px;">
+      <img id="difficult icon" onclick="difficult()" src="mods/test/images/freeplay/difficulties icon/normal.png" style="z-index: 6; scale: 0.15; background-color:white; position: absolute; left: 200px; top: -95px;">
+      <a id="difficult text" style="zIndex: 5; border-radius: 6px; position: absolute; top: 17px; left: 275px; padding: 6px; font-size: 8px; ">...</a>
+      <div style="zIndex: 5; position: absolute; background-Color: #00000052; border-radius: 6px; padding: 6px; left: 275px; top: -90px; height: 100px; width: 41px;"></div>
+
+      <div style="zIndex: 5; position: absolute; background-Color: #00000052; border-radius: 6px; padding: 6px; left: 350px; top: -90px; height: 100px; width: 300px;"></div>
+      <a id="difficult" style="zIndex: 5; background-Color: #00000052; border-radius: 6px; position: absolute; top: -9px; left: 350px; padding: 7px; font-size: 17px; width: 100px;">‹ normal ›</a>
+
+      <a onclick="play(); this.style.backgroundColor = '#75FF81D6'; " style="zIndex: 5; position: absolute; background-Color: #00FF158C; top: -5.5px; left: 530px; padding: 5px; font-size: 17px; border-radius: 6px;">play</a>
+  </div>
+  
+  <div id="mobile button" style="position: absolute; z-index: 10;">
+    <img onclick="moveUp()" src="assets/images/global/mobile/arrows.png" style="position: absolute; left: 430px; top: 90px; z-index: -1; scale: 0.2; transform: rotate(00deg);" />
+    <img onclick="moveDown()" src="assets/images/global/mobile/arrows.png" style="position: absolute; left: 430px; top: 160px; z-index: -1; scale: 0.2; transform: rotate(180deg);" />
+  </div>
+
+    
+  <!-- settings -->
+    
+  <div id="mods info" style="transform: scale(0); position: absolute; z-index: 5;">
+    <div style="z-index: 5; position: absolute; background-Color: black; opacity: 0.7;
+    border-radius: 6px; padding: 6px; left: 65px; top: 40px; height: 260px; width: 400px;"></div>
+
+  <img id="md:icon" onclick="difficult()" src="mods/base-game/icon.png" style="z-index: 6; scale: 0.16;
+  background-color: #00000052; border-radius: 50px; position: absolute; left: 170px; top: -143px;">
+
+
+    <a style="z-index: 5; scale: 1.2; width: 100px; position: absolute; top: 50px;
+    left: 85px; font-size: 8px; ">metadata :</a>
+    
+    <a id="md:name" style="z-index: 5; scale: 1.15; background-color: #5050507D; padding: 2px; border-radius: 3px;
+    width: 100px; position: absolute; top: 70px; left: 80px; font-size: 8px; ">mods Name: [  ]</a>
+    <a id="md:version" style="z-index: 5; scale: 1.15; background-color: #5050507D; padding: 2px; border-radius: 3px;
+    width: 100px; position: absolute; top: 90px; left: 80px; font-size: 8px; ">Version: [  ]</a>
+    <a id="md:credits" style="z-index: 5; scale: 1.15; background-color: #5050507D; padding: 2px; border-radius: 3px;
+    width: 100px; position: absolute; top: 110px; left: 80px; font-size: 8px; ">credits: [  ]</a>
+    <a id="md:web"style="z-index: 5; scale: 1.15; background-color: #5050507D; padding: 2px; border-radius: 3px;
+    width: 100px; position: absolute; top: 130px; left: 80px; font-size: 8px; ">website: [  ]</a>
+    
+    <a id="md:description" style="z-index: 5; scale: 1.25; background-color: #5050507D; padding: 2px; border-radius: 3px;
+    width: 310px; position: absolute; height: 100px; top: 185px; left: 112px; font-size: 8px; ">...</a>
+ 
+ 
+ 
+  </div>
+    
+  <div id="settings" style="visibility: hidden; z-index: 5; position: absolute;">
+    <div style="z-index: 5; position: absolute; background-Color: black; opacity: 0.7; border-radius: 6px; padding: 6px; left: 5px; top: 60px; height: 250px; width: 200px;"></div>
+    <a style="z-index: 5; scale: 1.5; width: 100px; position: absolute; top: 70px; left: 40px; font-size: 8px; ">settings :</a>
+    <!-- add your custom settings here !!! -->
+
+    <a id="S:Botplay" onclick="settingPress('Botplay'); selectionnedSound();" style="z-index: 5; font-size: 10px; color: white; position: absolute; left: 9px; top: 100px; width: 150px; background-Color: #5050507D; border-radius: 2px; padding: 5px;">botplay</a>
+  </div>
+    
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script src="scripts/global/FMS-folder.js"></script>
+  <script src="extensions/storage/storage.js"></script>
+  <script src="scripts/global/mainGlobal.js"></script>
+  <script src="extensions/FMS-engine/FMS engine.js"></script>
+  <script src="scripts/menu/freeplays/BPM.js"></script>
+  <script src="scripts/menu/freeplays/previewSongs.js"></script>
+  <script src="scripts/menu/freeplays/mainFreeplay.js"></script>
+</body>
+  <style>
+    body {
+      background-Color: black;
+    }
+  </style>
+<div>
+</div>
+
+</html>

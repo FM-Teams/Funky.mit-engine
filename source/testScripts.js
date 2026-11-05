@@ -1,3 +1,4 @@
+
 // put you test scripts here !
 
 // load extension 
@@ -18,3 +19,12 @@ false);
 //FMLUA_playScript("y","test.lua",false)
 
 FMS_makeText("myText",["for test your \a scripts, go to 'app/source/scripts/other/testZone.js <-- "],window.innerWidth / 2,100)
+
+FMS_playScript("",["extensions/xml.js"])
+
+setTimeout(() => {
+ 
+/*const e = loadXMLAnimation("assets/images/BOYFRIEND.png","assets/images/BOYFRIEND.xml")
+e.animation["BF dead loop"]*/
+},1000)
+
