@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="euh" style="scale: 1; position: absolute; transform-origin: center;">
+  
+  <div id="GUI" style="position: absolute; left: 1px; top: 1px; z-index: 10;">
+    <div id="ranks" style="position: absolute; z-index: 9;">
+      
+    </div>
+    <img id="loadingS" src="assets/images/loadingScreen.gif" style="z-index: 12; position: absolute; opacity: 1; left: -7px; top: -8px; z-index: 20; visibility: visible; scale: 1.01"/>
+    
+    <div id="health bars" style="position: absolute; z-index: 1">
+        
+    </div>
+
+    <div id="notes" style="scale: 1; visibility: visible; position: absolute; top: -4px; z-index: 10;"></div>
+    <div id="notes opponent" style="scale: 1; visibility: visible; position: absolute; top: -4px; z-index: 10;"></div>
+
+    <img id="PressFoPlay" onclick="startingGlobalGame()" src="assets/images/PressToPlay.gif" style="position: absolute; scale: 1.05; opacity: 0.8; left: -8px; top: -8px; z-index: 11; " />
+    
+    <div id="pauseMenu" style="scale: 1; visibility: hidden; position: absolute; z-index: 11;">
+      <div style="position: absolute; left: -10px; top: -10px; background-color: black; width: 1000px; height: 1000px; opacity: 0.5; z-index: 11;" ></div>
+      
+      
+      <a id="menu songName" style="position: absolute; z-index: 11; opacity: 1; width: 700px;">...</a>
+      
+      <a id="pauseMenu:resume" style="position: absolute; background-color: #0000004F; z-index: 11; opacity: 1; padding: 2; border-radius: 4px;
+      font-size: 21px; top: 100px; width: 200px;" onclick="pauseMenu()" >< Resume</a>
+      
+      <a style="position: absolute; z-index: 11; opacity: 1; background-color: #0000004F; padding: 2; border-radius: 4px;
+      font-size: 21px; top: 150px; width: 200px;" onclick="transition(1)" >< Restart</a>
+
+      <a id="pauseMenu:exit" style="position: absolute; z-index: 11; opacity: 1; background-color: #0000004F; padding: 2; border-radius: 4px;
+      font-size: 21px; top: 200px; width: 200px;" onclick="goBackmenu()" >< exit</a>
+    </div>
+    
+  </div>
+  
+  <div id="PRE-GAME" id="08269534672891" style="scale: 1; position: absolute; left: 1px; top: 1px; z-index: 0;">
+    <div id="GAME" style="scale: 1; position: absolute; left: 1px; top: 1px; z-index: 0; transform-origin: center;" >
+      <div id="characters">
+        <div id="Boyfriend" style="position: absolute; z-index: 1;"></div>
+        <div id="Girlfriend" style="position: absolute; z-index: 0;"></div>
+        <div id="Dad" style="position: absolute; z-index: 1;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- script ( and extension ) -->
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  
+  <script src="scripts/global/FMS-folder.js"></script>
+  <script src="extensions/FMS-engine/FMS engine.js"></script>
+
+  <script src="scripts/game/characters.js"></script>
+  <script src="scripts/global/mainGlobal.js"></script>
+  <script src="scripts/game/menuPause.js"></script>
+  <script src="scripts/game/notes.js"></script>
+  <script src="extensions/animate/animate v1.js"></script>
+  <script src="scripts/game/mobileButtons.js"></script>
+  <script src="scripts/game/gameGui.js"></script>
+  <script src="scripts/game/bfdiedScreen.js"></script>
+  <script src="scripts/game/mainGame.js"></script>
+  <script src="scripts/game/ranks.js"></script>  
+  
+  <script src="scripts/game/BPM.js"></script>
+  <script src="scripts/game/events.js"></script>
+  <script src="scripts/game/chartPlayer.js"></script>
+
+  
+</body>
+  <style>
+    body {
+      background-Color: black;
+      transform-origin: center;
+    }
+    
+    progress {
+      background-color: red;
+      border-radius: 1px;
+      color: red;
+      background-color: #4CAF50;
+      color: black;
+    }
+  </style>
+
+<div>
+</div>
+
+</html>

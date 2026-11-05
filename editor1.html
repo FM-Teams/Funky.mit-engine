@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="notes" style="visibility: visible; position: absolute; top: -4px; z-index: 10;"></div>
+ 
+ <div style="position: absolute; left: -5px; top: -7px; background-color: #363859; border: 0px solid #292B3D; border-radius: 1px; width: 200px; height: 20px; opacity: 0.5;"></div>
+ 
+  <div>
+    <a style="background-color: #7a4b4b; position: absolute; scale: 0.4; left: -15px; top: -7px; padding: 2px;" onclick="transition(2)">< exit</a>
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: 20px; scale: 0.4; top: -7px; padding: 2px;" onclick="importB()">Import</a>
+    
+    <div id="importG" style="position: absolute; left: 3px; top: 0px; visibility: hidden; z-index: 2;">
+      <div style="position: absolute; left: 35px; top: 14px; background-color: #363859; border: 0px solid #292B3D; width: 35px; height: 40px; border: 1px solid #292B3D;"></div>
+      
+      <label style="background-color: #4b4d7a; position: absolute; left: 34px; scale: 0.4; top: 10px; padding: 2px;" for="FNF file">FNF</label>
+      <input type="file" id="FNF file" style="display: none;" accept=".json">
+    </div>
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: 55px; scale: 0.4; top: -7px; padding: 2px;">Export</a>
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: 90px; scale: 0.4; top: -7px; padding: 2px;">setting</a>
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: 143px; scale: 0.4; top: -7px; padding: 2px;">Info</a>
+  </div>
+  
+  <div>
+    <a style="position: absolute; left: -38px; scale: 0.35; top: 54px; padding: 2px; z-index: 1;">song File:</a>
+    <input type="text" id="file" style="position: absolute; z-index: 1; scale: 0.5; top: 55px; left: 2px;">
+    
+    <img id="play" style="position: absolute; z-index: 1; scale: 0.1; top: 14px; left: 125px;" onclick="playCharting()" src="assets/images/editor/play.png">
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: -45px; scale: 0.3; top: 70px; padding: 2px; z-index: 1;" onclick="loadLocalChart()">> load chart</a>
+    <a style="background-color: #4b4d7a; position: absolute; left: 20px; scale: 0.3; top: 70px; padding: 2px; z-index: 1;" onclick="loadLocalInst()">> load Inst</a>
+    <a style="background-color: #4b4d7a; position: absolute; left: 72px; scale: 0.3; top: 70px; padding: 2px; z-index: 1;" onclick="loadLocalVoice()">> load Voice</a>
+
+
+    <div>
+      <img id="asIcon" style="position: absolute; z-index: 1; scale: 0.15; top: -50px; left: 180px;" src="assets/images/editor/player icon.png">
+    </div>
+  </div>
+  
+  <a id="songTime" style="position: absolute; left: 231px; top: 340px; background-color: #363859; z-index: 1; scale: 0.45;" >00:00:00</a>
+  
+  <div style="position: absolute; left: 302px; top: -20px; background-image: url(assets/images/editor/BG.png); z-index: 2; border-radius: 7px; width: 83px; height: 470px; background-size: 41px; opacity: 0.2;"></div>
+  
+  <div style="position: absolute; left: 405px; top: -20px; background-image: url(assets/images/editor/BG.png); z-index: 2; border-radius: 7px; width: 83px; height: 470px; background-size: 41px; opacity: 0.2;"></div>
+
+  <div style="position: absolute; left: -20px; top: 50px; background-color: #363859; border: 1.5px solid #292B3D; border-radius: 3px; width: 200px; height: 270px;"></div>
+  
+  <div style="position: absolute; left: 300px; top: -20px; background-color: #363859; border: 3px solid #292B3D; border-radius: 10px; width: 190px; height: 500px;"></div>
+
+  <script src="scripts/main/global.js"></script>
+  <script src="scripts/main/editorStat.js"></script>
+  <style>
+    body {
+      background-Color: black;
+      background-image: url(assets/images/editor/BG.png);
+      background-size: 15px;
+    }
+  </style>
+</body>
+
+</html>

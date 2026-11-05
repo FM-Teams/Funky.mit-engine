@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="body">
+  <div id="notes" style="visibility: visible; position: absolute; top: -4px; z-index: 10;"></div>
+ 
+ <div style="position: absolute; left: -5px; top: -7px; background-color: #363859; border: 0px solid #292B3D; border-radius: 1px; width: 200px; height: 20px; opacity: 0.5;"></div>
+ 
+  <div>
+    <a style="background-color: #7a4b4b; position: absolute; scale: 0.4; left: -15px; top: -7px; padding: 2px;" onclick="transition(2)">< exit</a>
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: 20px; scale: 0.4; top: -7px; padding: 2px;" onclick="importB()">Import</a>
+    
+    <div id="importG" style="position: absolute; left: 3px; top: 0px; visibility: hidden; z-index: 2;">
+      <div style="position: absolute; left: 35px; top: 14px; background-color: #363859; border: 0px solid #292B3D; width: 35px; height: 40px; border: 1px solid #292B3D;"></div>
+      
+      <label style="background-color: #4b4d7a; position: absolute; left: 34px; scale: 0.4; top: 10px; padding: 2px;" for="FNF file">FNF</label>
+      <input type="file" id="FNF file" style="display: none;" accept=".json">
+    </div>
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: 55px; scale: 0.4; top: -7px; padding: 2px;">Export</a>
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: 90px; scale: 0.4; top: -7px; padding: 2px;">setting</a>
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: 143px; scale: 0.4; top: -7px; padding: 2px;">Info</a>
+  </div>
+  
+  <div>
+    <a style="position: absolute; left: -17px; scale: 0.35; top: 54px; padding: 2px; z-index: 7;">JSON: </a>
+
+    <input value="/assets/mods/base-game/characters/BF" type="text" id="file" style="position: absolute; z-index: 7; scale: 0.5; top: 55px; left: -13px; background-color: white;">
+
+    <img id="play" style="position: absolute; z-index: 7; scale: 0.1; top: 56px; left: 30px;" onclick="playAnimation()" src="assets/images/editor/play.png">
+  
+    
+    <div style="z-index:7; position: absolute; left: -20px; top: 90px; background-color: black; border-radius: 3px; width: 200px; height: 3px; opacity: 0.3;"></div>
+    
+    <!-- __________ -->
+    
+    <a style="position: absolute; left: -21px; scale: 0.35; top: 110px; padding: 2px; z-index: 7;">Delay: </a>
+    
+    <img id="d" style="position: absolute; z-index: 7; scale: 0.24; top: 96px; left: 60px;" onclick="refrechDelay()" src="assets/images/editor/reset.png">
+
+    <img id="d" style="position: absolute; z-index: 7; scale: 0.30; top: 96px; left: 80px;" onclick="saveDelay()" src="assets/images/editor/download.png">
+
+    
+    <input value="0" type="text" id="delay1" style="position: absolute; z-index: 7; scale: 0.5; top: 110px; width: 35px; left: 20px;">
+    <input value="0" type="text" id="delay2" style="position: absolute; z-index: 7; scale: 0.5; top: 110px; width: 35px; left: 45px;">
+    
+    <a style="position: absolute; left: -16px; scale: 0.35; top: 96px; padding: 2px; z-index: 7;">Anim: </a>
+
+    <input value="L" type="text" id="anim" style="position: absolute; z-index: 7; scale: 0.5; top: 97px; left: 15px; width: 50px;">
+
+    <a style="background-color: #4b4d7a; position: absolute; left: 105px; scale: 0.3; top: 53px; padding: 2px; z-index: 7;" onclick="transition(3)">< reset</a>
+
+    <a style="background-color: #4b4d7a; position: absolute; left: 88px; scale: 0.3; top: 67px; padding: 2px; z-index: 7;" onclick="getCharacters();">> load Anim</a>
+    
+    <input value="mods/base-game/images/stages/week1/normal.png" type="text" id="BGfile" style="position: absolute; z-index: 7; scale: 0.5; top: 300px; left: -65px; width:300px; ">
+    
+    <a style="background-color: #4b4d7a; position: absolute; left: 80px; scale: 0.3; top: 287px; padding: 2px; z-index: 7;" onclick="BG();">> reload BG</a>
+
+    <div>
+    </div>
+  </div>
+  
+  <div id="GAME" style=" position: absolute; left: 0px; top: 0px;">
+    <img src="assets/images/editor/dad reference.png" style="position: absolute; left: 100px; top: 80px; opacity: 0.5; scale: 1.3;" alt="" />
+   
+     <img src="assets/images/editor/gf reference.png" style="position: absolute; left: 250px; top: 85px; opacity: 0.5; scale: 1.2;" alt="" />
+ 
+   
+   <img src="assets/images/editor/bf reference.png" style="position: absolute; left: 400px; top: 80px; opacity: 0.5; scale: 1.3;" alt="" />
+
+
+    <img id="BG reference" src="mods/base-game/images/stages/week1/normal.png" alt="" style="position: absolute; left: -900px; top: -600px; scale: 0.4; z-index: -1; opacity: 0.5;"/>
+  </div>
+
+
+  <div style="z-index:6; position: absolute; left: -20px; top: 50px; background-color: #363859; border: 1.5px solid #292B3D; border-radius: 3px; width: 200px; height: 270px; opacity: 0.8;"></div>
+  
+  <script src="extensions/FMS-engine/FMS engine.js"></script>
+  <script src="extensions/storage/storage.js"></script>
+
+  <script src="scripts/global/mainGlobal.js"></script>
+  <script src="extensions/animate/animate v1.js"></script>
+  <script src="scripts/editors/characters/mainChara.js"></script>
+  <style>
+    body {
+      background-Color: black;
+      background-image: url(assets/images/editor/BG.png);
+      background-size: 15px;
+    }
+  </style>
+</body>
+
+</html>

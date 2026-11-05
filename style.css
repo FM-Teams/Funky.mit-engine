@@ -1,0 +1,11 @@
+body {
+  font-size: 15pt;
+  background-color: black;
+  color: white;
+  font-family: vcr;
+  text-shadow: 1px 1px 1.5px black;
+}
+
+@font-face {
+   font-family: vcr; src: url('assets/fonts/vcr.ttf'); 
+}

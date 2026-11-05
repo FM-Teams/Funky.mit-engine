@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+  <body id="bod" style="scale: 1; position: absolute;">
+    
+  <a id="backButton" onclick="transition(); backSound(); setTimeout(() => { window.location = 'start-screen.html' },2000);" style="scale: 0.7; z-index: 2; font-size: 20px; color: white; position: absolute; top: -10px; left: -10px; width: 15px; background-Color: #5050507D; border-radius: 5px; padding: 5px; opacity: 0.5;" ><</a>
+    
+	<a id="backButton" onclick="menuModding();" style="scale: 0.7; z-index: 2; font-size: 20px; color: white; position: absolute; top: -10px; left: 590px; width: 15px; background-Color: #5050507D; border-radius: 5px; padding: 5px; opacity: 0.5;" >></a>
+
+  <img id="menuBG" src="assets/images/menuBG.png" style="position: absolute; left: 5px; top: -8px; z-index: -1; scale: 1.1;" />  
+  
+  <img id="freeplay" src="assets/images/menuButtons/freeplay.png" style="visibility:hidden; position: absolute; scale: 0.25; left: -410px; top: -100px;" onclick="setInterval(() => { transition(4) },1000); selectionnedSound('freeplay')" alt="freeplay" />
+  
+  <img id="setting" src="assets/images/menuButtons/setting.png" style="visibility:hidden; position: absolute; scale: 0.25; left: -420px; top: 0px;" onclick="setTimeout(() => { transition(); },1000); setTimeout(() => { window.location = 'MENU-Settings.html' },3000); selectionnedSound('setting')" alt="" />
+  
+  <img id="credit"src="assets/images/menuButtons/credit.png" style="visibility:hidden; position: absolute; scale: 0.26; left: -420px; top: 105px;" onclick="setTimeout(() => { transition(); },1000); setTimeout(() => { window.location = 'MENU-Credits.html' },3000); selectionnedSound('credit')" alt="" />
+  
+  <div style="background-color: white; width: 210px; height: 200px; position: absolute; left: 355px; top: 60px;" ></div>
+
+  <div id="menuChoiseButton" style="transform: scale(0);">
+    <div style="background-color: black; width: 800px; height: 500px; position: absolute; left: -10px; top: -10px; opacity: 0.6;" ></div>
+    <a style="scale: 0.7; z-index: 2; font-size: 20px; color: white; position: absolute; top: -10px; left: -50px; width: 300px; border-radius: 5px; padding: 10px; opacity: 1;" >editors :</a>
+
+    <a id="backButton" onclick="setTimeout(() => { transition(); },1000); setTimeout(() => { window.location = 'testZone.html' },3000); selectionnedSound()" style="scale: 0.6; z-index: 2; font-size: 20px; color: white; position: absolute; top: 40px; left: -40px; width: 300px; background-Color: #0000004F; border-radius: 5px; padding: 10px; opacity: 1;" >playground scripts</a>
+
+    <a id="backButton" onclick="transition('editor2',true);" style="scale: 0.6; z-index: 2; font-size: 20px; color: white; position: absolute; top: 120px; left: -40px; width: 300px; background-Color: #0000004F; border-radius: 5px; padding: 10px; opacity: 1;" >characters editor</a>
+    
+    <a id="backButton"  style="scale: 0.6; z-index: 2; font-size: 20px; color: white; position: absolute; top: 200px; left: -40px; width: 300px; background-Color: #0000004F; border-radius: 5px; padding: 10px; opacity: 1;" >more later...</a>
+
+  </div>
+  
+  <script src="extensions/storage/storage.js"></script>
+  <script src="extensions/FMS-engine/FMS engine.js"></script>
+  <script src="scripts/global/mainGlobal.js"></script>
+  <script src="scripts/menu/mainMenu.js"></script>
+
+</body>
+  <style>
+    body {
+      background-Color: black;
+    }
+  </style>
+<div>
+</div>
+
+</html>
